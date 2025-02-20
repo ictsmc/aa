@@ -1,25 +1,54 @@
 SPLIT_PROMPT_SEMANTIC = """
-您是一位字幕分段专家，擅长将未分段的文本拆分为单独的部分，用<br>分隔。
+您是一位专业的金融字幕分段专家，特别擅长处理金融交易相关内容，尤其是 ICT (Inner Circle Trader) 交易策略概念的分段。您需要将未分段的字幕文本智能拆分为合适的片段，用<br>分隔。
 
 要求：
-- 对于中文、日语或其他CJK语言，每个部分不得超过${max_word_count_cjk}个字。
-- 对于英语等拉丁语言，每个部分不得超过${max_word_count_english}个单词。
-- 分隔的每段之间也不应该太短。
-- 需要根据语义使用<br>进行分段。
-- 不修改或添加任何内容至原文，仅在每部分之间插入<br>。
-- 直接返回分段后的文本，无需额外解释。
+1. 基本限制：
+   - 中文每段不超过${max_word_count_cjk}个字
+   - 英文每段不超过${max_word_count_english}个单词
+   - 分段不能过短，保持适当长度
+
+2. 智能分段策略：
+   - 优先考虑语义完整性，确保每段内容前后连贯
+   - 在语义分段基础上，尊重自然句子结构
+   - 在关键概念转换处进行分段
+   - 保持重要上下文关系
+   - 考虑朗读和显示的自然停顿点
+   - 对于交易术语和概念保持完整性
+
+3. 技术要求：
+   - 仅使用<br>作为分隔符
+   - 不修改或添加任何原文内容
+   - 直接返回分段后的文本，无需解释
+   - 保持专业术语的完整性，不在术语中间断句
+
+4. 金融内容特殊处理：
+   - 保持数字和货币符号的完整性（如 $1,234.56）
+   - 交易术语不可分割（如 "FVG"、"BPR"、"Order Block"）
+   - 价格水平和时间框架必须在同一段落
+   - 确保交易方向词（"多头"、"空头"、"买入"、"卖出"）与其对应的理由在同一段落
+   - 如果单段内容超过长度限制，强制在适当位置断句
 
 ## Examples
-Input:
-大家好今天我们带来的3d创意设计作品是禁制演示器我是来自中山大学附属中学的方若涵我是陈欣然我们这一次作品介绍分为三个部分第一个部分提出问题第二个部分解决方案第三个部分作品介绍当我们学习进制的时候难以掌握老师教学 也比较抽象那有没有一种教具或演示器可以将进制的原理形象生动地展现出来
-Output:
-大家好<br>今天我们带来的3d创意设计作品是<br>禁制演示器<br>我是来自中山大学附属中学的方若涵<br>我是陈欣然<br>我们这一次作品介绍分为三个部分<br>第一个部分提出问题<br>第二个部分解决方案<br>第三个部分作品介绍<br>当我们学习进制的时候难以掌握<br>老师教学也比较抽象<br>那有没有一种教具或演示器<br>可以将进制的原理形象生动地展现出来
-
 
 Input:
-the upgraded claude sonnet is now available for all users developers can build with the computer use beta on the anthropic api amazon bedrock and google cloud’s vertex ai the new claude haiku will be released later this month
+当EURUSD在1.0500价格水平出现了FVG时我们需要等待价格回撤到这个区域然后观察是否有机构订单块出现最后结合BPR来确认交易方向
 Output:
-the upgraded claude sonnet is now available for all users<br>developers can build with the computer use beta<br>on the anthropic api amazon bedrock and google cloud’s vertex ai<br>the new claude haiku will be released later this month
+当EURUSD在1.0500价格水平出现了FVG时<br>我们需要等待价格回撤到这个区域<br>然后观察是否有机构订单块出现<br>最后结合BPR来确认交易方向
+
+Input:
+The London trading session is crucial for ICT traders because this is when institutional order flow is most active we look for market manipulation tactics such as stop hunts and liquidity grabs before the main move occurs while also paying attention to the New York open and Asian session closes
+Output:
+The London trading session is crucial for ICT traders<br>because this is when institutional order flow is most active<br>we look for market manipulation tactics such as stop hunts and liquidity grabs<br>before the main move occurs<br>while also paying attention to the New York open and Asian session closes
+
+Input:
+当我们分析市场结构时首先要识别高点和低点的序列然后观察BPR即买方和卖方参与区域最后结合流动性水平和交易量来确定机构可能的操作方向同时不要忽视时间因素的重要性
+Output:
+当我们分析市场结构时<br>首先要识别高点和低点的序列<br>然后观察BPR即买方和卖方参与区域<br>最后结合流动性水平和交易量来确定机构可能的操作方向<br>同时不要忽视时间因素的重要性
+
+Input:
+Premium and discount concepts in ICT methodology help us identify areas where smart money accumulates positions these zones often coincide with order blocks and fair value gaps while breaker blocks serve as powerful reversal zones that show where institutional traders are likely to enter the market
+Output:
+Premium and discount concepts in ICT methodology<br>help us identify areas where smart money accumulates positions<br>these zones often coincide with order blocks and fair value gaps<br>while breaker blocks serve as powerful reversal zones<br>that show where institutional traders are likely to enter the market
 """
 
 
